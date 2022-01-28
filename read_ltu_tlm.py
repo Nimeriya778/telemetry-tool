@@ -1,16 +1,13 @@
 #!/usr/bin/env python3
-from datetime import datetime, timezone, timedelta
+
 from ipaddress import IPv4Address
 import sys
 import sqlite3
+from timestamp import timestamp_to_unixtime
 
 # sys.argv is a list, which contains the command-line arguments passed to the script.
 # The first item of this list contains the name of the script itself.
 filename = sys.argv[1]
-
-# Satellite control system time started from January 1, 2014 00:00:00 (UTC + 8)
-beijing_time = timezone(timedelta(hours=8))
-scs_epoch = datetime(2014, 1, 1, tzinfo=beijing_time).timestamp()
 
 LTU_IP_LIST = {
     IPv4Address("172.16.1.11"): "LTU1.1",
@@ -121,11 +118,11 @@ with open(filename, "rb") as binary_file:
         packet_count += 1
 
         # Look for the source LTU IP address sized 4 bytes
-        saddr = packet[IP_OFF : IP_OFF + 4]
-        saddr_ip = IPv4Address(saddr)
+        source_addr = packet[IP_OFF : IP_OFF + 4]
+        ip_source_addr = IPv4Address(source_addr)
 
-        if saddr_ip in LTU_IP_LIST:
-            channel = LTU_IP_LIST[saddr_ip]
+        if ip_source_addr in LTU_IP_LIST:
+            channel = LTU_IP_LIST[ip_source_addr]
 
             x_cutime = packet[CUTIME_OFF : CUTIME_OFF + CUTIME_W]
 
@@ -174,12 +171,6 @@ with open(filename, "rb") as binary_file:
             x_pls_hvf2 = packet[PLS_HVF2_OFF : PLS_HVF2_OFF + DW]
 
             # Create an int from bytes. Default is unsigned.
-
-            # Receive CU timestamp and convert it to UNIX time
-            cutime_timestamp = (
-                8e-9 * int.from_bytes(x_cutime, byteorder="little") + scs_epoch
-            )
-
             i_brd_lt1 = int.from_bytes(x_brd_lt1, byteorder="little")
             i_brd_lt2 = int.from_bytes(x_brd_lt2, byteorder="little")
             i_brd_lt3 = int.from_bytes(x_brd_lt3, byteorder="little")
@@ -217,6 +208,9 @@ with open(filename, "rb") as binary_file:
             i_pls_ldf1 = int.from_bytes(x_pls_ldf1, byteorder="little")
             i_pls_ldf2 = int.from_bytes(x_pls_ldf2, byteorder="little")
             i_pls_hvf2 = int.from_bytes(x_pls_hvf2, byteorder="little")
+            i_cutime = int.from_bytes(x_cutime, byteorder="little")
+
+            cutime_timestamp = timestamp_to_unixtime(i_cutime)
 
             if i_rt1 != 0 or i_rt2 != 0 or i_rt3 != 0:
 
