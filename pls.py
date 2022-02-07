@@ -45,12 +45,10 @@ class PlsTelemetry:
 
         # pylint: disable=too-many-locals, invalid-name
         pls = unpack_from(PLS_PAYLOAD_FMT, packet, PLS_OFF)
-        hvr1, ldr1, ldr2, hvr2 = map(lambda x: PLS_VOLT_UNIT * x, pls[0:4])
-        i1, i4 = map(lambda x: PLS_CUR_UNIT * x, pls[4:12:7])
-        ld1, ld2 = map(lambda x: PLS_VOLT_UNIT * x, pls[5:7])
-        i2, i3 = map(lambda x: PLS_CUR_UNIT * x, pls[7:9])
-        ld3, ld4 = map(lambda x: PLS_VOLT_UNIT * x, pls[9:11])
-        hvf1, ldf1, ldf2, hvf2 = map(lambda x: PLS_VOLT_UNIT * x, pls[12:16])
+        hvr1, ldr1, ldr2, hvr2, hvf1, ldf1, ldf2, hvf2, ld1, ld2, ld3, ld4 = map(
+            lambda x: PLS_VOLT_UNIT * x, pls[0:4] + pls[12 : 16 + pls[5:7] + pls[9:11]]
+        )
+        i1, i4, i2, i3 = map(lambda x: PLS_CUR_UNIT * x, pls[4:12:7] + pls[7:9])
 
         return PlsTelemetry(
             hvr1,
