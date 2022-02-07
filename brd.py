@@ -31,10 +31,6 @@ class BrdTelemetry:
         """
 
         temps = unpack_from(BRD_PAYLOAD_FMT, packet, BRD_OFF)
-
-        lt1 = BRD_TEMP_UNIT * temps[0] - 273
-        lt2 = BRD_TEMP_UNIT * temps[1] - 273
-        lt3 = BRD_TEMP_UNIT * temps[2] - 273
-        lt4 = BRD_TEMP_UNIT * temps[3] - 273
+        lt1, lt2, lt3, lt4 = map(lambda x: BRD_TEMP_UNIT * x - 273, temps)
 
         return BrdTelemetry(lt1, lt2, lt3, lt4)

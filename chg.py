@@ -34,8 +34,7 @@ class ChgTelemetry:
         """
 
         chg = unpack_from(CHG_PAYLOAD_FMT, packet, CHG_OFF)
-        vtcur1 = CHG_CUR_UNIT * chg[0]
-        vscur = CHG_CUR_UNIT * chg[1]
+        vtcur1, vscur = map(lambda x: CHG_CUR_UNIT * x, chg[0:2])
         vsdiv = CHG_VSDIV_UNIT * chg[2]
         vtdiv1 = CHG_VTDIV_UNIT * chg[3]
 

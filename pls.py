@@ -45,22 +45,12 @@ class PlsTelemetry:
 
         # pylint: disable=too-many-locals, invalid-name
         pls = unpack_from(PLS_PAYLOAD_FMT, packet, PLS_OFF)
-        hvr1 = PLS_VOLT_UNIT * pls[0]
-        ldr1 = PLS_VOLT_UNIT * pls[1]
-        ldr2 = PLS_VOLT_UNIT * pls[2]
-        hvr2 = PLS_VOLT_UNIT * pls[3]
-        i1 = PLS_CUR_UNIT * pls[4]
-        ld1 = PLS_VOLT_UNIT * pls[5]
-        ld2 = PLS_VOLT_UNIT * pls[6]
-        i2 = PLS_CUR_UNIT * pls[7]
-        i3 = PLS_CUR_UNIT * pls[8]
-        ld3 = PLS_VOLT_UNIT * pls[9]
-        ld4 = PLS_VOLT_UNIT * pls[10]
-        i4 = PLS_CUR_UNIT * pls[11]
-        hvf1 = PLS_VOLT_UNIT * pls[12]
-        ldf1 = PLS_VOLT_UNIT * pls[13]
-        ldf2 = PLS_VOLT_UNIT * pls[14]
-        hvf2 = PLS_VOLT_UNIT * pls[15]
+        hvr1, ldr1, ldr2, hvr2 = map(lambda x: PLS_VOLT_UNIT * x, pls[0:4])
+        i1, i4 = map(lambda x: PLS_CUR_UNIT * x, pls[4:12:7])
+        ld1, ld2 = map(lambda x: PLS_VOLT_UNIT * x, pls[5:7])
+        i2, i3 = map(lambda x: PLS_CUR_UNIT * x, pls[7:9])
+        ld3, ld4 = map(lambda x: PLS_VOLT_UNIT * x, pls[9:11])
+        hvf1, ldf1, ldf2, hvf2 = map(lambda x: PLS_VOLT_UNIT * x, pls[12:16])
 
         return PlsTelemetry(
             hvr1,
