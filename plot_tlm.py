@@ -2,7 +2,9 @@
 Plot LTU telemetry from the database
 """
 
+from typing import List
 import sqlite3
+from sqlite3 import Connection, Cursor
 from datetime import datetime
 import matplotlib.dates as md
 import matplotlib.pyplot as plt
@@ -15,58 +17,75 @@ pls_hv_plot_list = ["cutime", "pls_hvr1", "pls_hvr2", "pls_hvf1", "pls_hvr2"]
 pls_ld_plot_list = ["cutime", "pls_ldr1", "pls_ldr2", "pls_ldf1", "pls_ldf2"]
 pls_cur_plot_list = ["cutime", "pls_i1", "pls_i2", "pls_i2", "pls_i3"]
 
-conn = sqlite3.connect("ltu-tel.sqlite")
-cur = conn.cursor()
+connection = sqlite3.connect("ltu-tel.sqlite")
 
 
-def retrieve_from_db(cursor_obj, list_of_columns):
+def retrieve_from_db(conn: Connection, columns: List[str]) -> Cursor:
     """
     Create the query to get specific data
     """
 
-    script = f"SELECT {','.join(list_of_columns)} FROM telemetry_ltu11"
-    return cursor_obj.execute(script)
+    script = f"SELECT {','.join(columns)} FROM telemetry_ltu11"
+    return conn.cursor().execute(script)
 
 
-retrieve_from_db(cur, brd_plot_list)
-
-dates = []
-brd_lt_list = []
-
-for row in cur:
-    datenums = md.date2num(datetime.fromtimestamp(row[0]))
-    dates.append(datenums)
-    brd_lt1 = float(row[1])
-    brd_lt_list.append(brd_lt1)
+brd_cursor = retrieve_from_db(connection, brd_plot_list)
+ldd_lt_cursor = retrieve_from_db(connection, ldd_lt_plot_list)
+ldd_rt_cursor = retrieve_from_db(connection, ldd_rt_plot_list)
+ldd_volt_cursor = retrieve_from_db(connection, ldd_volt_plot_list)
+pls_hv_cursor = retrieve_from_db(connection, pls_hv_plot_list)
+pls_ld_cursor = retrieve_from_db(connection, pls_ld_plot_list)
+pls_cur_cursor = retrieve_from_db(connection, pls_cur_plot_list)
 
 
-def plot_telemetry(fig_number, param1, param2):
+def collect_for_plot(cursor_obj: Cursor) -> List[List]:
+    """
+    Gather data into multiple lists
+    """
+
+    params_list = []
+    for _ in cursor_obj.description:
+        params_list.append([])
+    for row in cursor_obj:
+        for index, elem in enumerate(row):
+            params_list[index].append(elem)
+    return params_list
+
+
+brd_lt_params = collect_for_plot(brd_cursor)
+
+
+def plot_telemetry(fig_number, params_list):
     """
     Create a plot
     """
 
-    fig = plt.figure(fig_number)
+    # if isinstance(params_list, listdatetime):
+    #    md.date2num(datetime.fromtimestamp(params_list[0]))
+
+    fig.plt.figure(fig_number)
     plt.tick_params(axis="both", which="major", labelsize=10)
     plt.minorticks_on()
     plt.grid(which="minor", linewidth=0.5, linestyle="--")
     plt.grid(which="major", color="grey", linewidth=1)
     plt.title("LTU Telemetry", fontsize=16)
     plt.xlabel("Time", fontsize=16)
-    axes = plt.gca()
-    fig.autofmt_xdate()
-    xfmt = md.DateFormatter("%Y-%m-%d")
-    axes.xaxis.set_major_formatter(xfmt)
+    # axes = plt.gca()
+    # fig.autofmt_xdate()
+    # xfmt = md.DateFormatter("%Y-%m-%d")
+    # axes.xaxis.set_major_formatter(xfmt)
     # plt.legend(loc="best", prop={"size": 10})
-    plt.scatter(param1, param2)
+    for param in params_list[1:]:
+        plt.scatter(params_list[0], param)
     # pylint: disable=C0103
-    if "lt" or "rt" in param2:
-        plt.ylabel("Temperature", fontsize=16)
-    elif "hv" or "ld" or "ldout" in param2:
-        plt.ylabel("Voltage", fontsize=16)
-    else:
-        plt.ylabel("Current", fontsize=16)
+    # if "lt" or "rt" in params_list:
+    #     plt.ylabel("Temperature", fontsize=16)
+    # elif "hv" or "ld" or "ldout" in param2:
+    #     plt.ylabel("Voltage", fontsize=16)
+    # else:
+    #     plt.ylabel("Current", fontsize=16)
 
     plt.show()
 
 
-brd_figure = plot_telemetry(1, dates, brd_lt_list)
+plot_telemetry(1, brd_lt_params)
