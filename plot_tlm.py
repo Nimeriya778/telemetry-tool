@@ -49,6 +49,8 @@ def collect_for_plot(cursor_obj: Cursor) -> List[List]:
     for row in cursor_obj:
         for index, elem in enumerate(row):
             params_list[index].append(elem)
+    for param in params_list[0]:
+        md.date2num(datetime.fromtimestamp(param))
     return params_list
 
 
@@ -61,15 +63,12 @@ pls_ld_params = collect_for_plot(pls_ld_cursor)
 pls_cur_params = collect_for_plot(pls_cur_cursor)
 
 
-def plot_telemetry(fig_number, params_list):
+def plot_telemetry(fig_number: int, params_list: List[List]) -> None:
     """
     Create a plot
     """
 
-    # if isinstance(params_list, listdatetime):
-    #    md.date2num(datetime.fromtimestamp(params_list[0]))
-
-    #fig.plt.figure(fig_number)
+    fig = plt.figure(fig_number)
     plt.tick_params(axis="both", which="major", labelsize=10)
     plt.minorticks_on()
     plt.grid(which="minor", linewidth=0.5, linestyle="--")
@@ -77,20 +76,27 @@ def plot_telemetry(fig_number, params_list):
     plt.title("LTU Telemetry", fontsize=16)
     plt.xlabel("Time", fontsize=16)
     # axes = plt.gca()
-    # fig.autofmt_xdate()
+    fig.autofmt_xdate()
     # xfmt = md.DateFormatter("%Y-%m-%d")
     # axes.xaxis.set_major_formatter(xfmt)
     # plt.legend(loc="best", prop={"size": 10})
     for param in params_list[1:]:
         plt.scatter(params_list[0], param)
-    # pylint: disable=C0103
-    # if "lt" or "rt" in params_list:
-    #     plt.ylabel("Temperature", fontsize=16)
-    # elif "hv" or "ld" or "ldout" in param2:
-    #     plt.ylabel("Voltage", fontsize=16)
-    # else:
-    #     plt.ylabel("Current", fontsize=16)
-
+    match fig_number:
+        case 1:
+            plt.ylabel("BRD Temperature", fontsize=16)
+        case 2:
+            plt.ylabel("LDD LT Temperature", fontsize=16)
+        case 3:
+            plt.ylabel("LDD RT Temperature", fontsize=16)
+        case 4:
+            plt.ylabel("LDD Voltage", fontsize=16)
+        case 5:
+            plt.ylabel("PLS HV Voltage", fontsize=16)
+        case 6:
+            plt.ylabel("PLS LD Voltage", fontsize=16)
+        case 7:
+            plt.ylabel("PLS Current", fontsize=16)
     plt.show()
 
 
