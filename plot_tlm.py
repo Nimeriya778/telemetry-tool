@@ -53,6 +53,12 @@ def collect_for_plot(cursor_obj: Cursor) -> List[List]:
 
 
 brd_lt_params = collect_for_plot(brd_cursor)
+ldd_lt_params = collect_for_plot(ldd_lt_cursor)
+ldd_rt_params = collect_for_plot(ldd_rt_cursor)
+ldd_volt_params = collect_for_plot(ldd_volt_cursor)
+pls_hv_params = collect_for_plot(pls_hv_cursor)
+pls_ld_params = collect_for_plot(pls_ld_cursor)
+pls_cur_params = collect_for_plot(pls_cur_cursor)
 
 
 def plot_telemetry(fig_number, params_list):
@@ -63,7 +69,7 @@ def plot_telemetry(fig_number, params_list):
     # if isinstance(params_list, listdatetime):
     #    md.date2num(datetime.fromtimestamp(params_list[0]))
 
-    fig.plt.figure(fig_number)
+    #fig.plt.figure(fig_number)
     plt.tick_params(axis="both", which="major", labelsize=10)
     plt.minorticks_on()
     plt.grid(which="minor", linewidth=0.5, linestyle="--")
@@ -89,3 +95,9 @@ def plot_telemetry(fig_number, params_list):
 
 
 plot_telemetry(1, brd_lt_params)
+plot_telemetry(2, ldd_lt_params)
+plot_telemetry(3, ldd_rt_params)
+plot_telemetry(4, ldd_volt_params)
+plot_telemetry(5, pls_hv_params)
+plot_telemetry(6, pls_ld_params)
+plot_telemetry(7, pls_cur_params)
