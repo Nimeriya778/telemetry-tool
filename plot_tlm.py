@@ -49,8 +49,7 @@ def collect_for_plot(cursor_obj: Cursor) -> List[List]:
     for row in cursor_obj:
         for index, elem in enumerate(row):
             params_list[index].append(elem)
-    for param in params_list[0]:
-        md.date2num(datetime.fromtimestamp(param))
+    # params_list[0] = [md.date2num(datetime.fromtimestamp(i)) for i in params_list[0]]
     return params_list
 
 
@@ -75,10 +74,11 @@ def plot_telemetry(fig_number: int, params_list: List[List]) -> None:
     plt.grid(which="major", color="grey", linewidth=1)
     plt.title("LTU Telemetry", fontsize=16)
     plt.xlabel("Time", fontsize=16)
-    # axes = plt.gca()
+    params_list[0] = [md.date2num(datetime.fromtimestamp(i)) for i in params_list[0]]
+    axes = plt.gca()
     fig.autofmt_xdate()
-    # xfmt = md.DateFormatter("%Y-%m-%d")
-    # axes.xaxis.set_major_formatter(xfmt)
+    xfmt = md.DateFormatter("%Y-%m-%d")
+    axes.xaxis.set_major_formatter(xfmt)
     # plt.legend(loc="best", prop={"size": 10})
     for param in params_list[1:]:
         plt.scatter(params_list[0], param)
@@ -101,9 +101,9 @@ def plot_telemetry(fig_number: int, params_list: List[List]) -> None:
 
 
 plot_telemetry(1, brd_lt_params)
-plot_telemetry(2, ldd_lt_params)
-plot_telemetry(3, ldd_rt_params)
-plot_telemetry(4, ldd_volt_params)
-plot_telemetry(5, pls_hv_params)
-plot_telemetry(6, pls_ld_params)
-plot_telemetry(7, pls_cur_params)
+# plot_telemetry(2, ldd_lt_params)
+# plot_telemetry(3, ldd_rt_params)
+# plot_telemetry(4, ldd_volt_params)
+# plot_telemetry(5, pls_hv_params)
+# plot_telemetry(6, pls_ld_params)
+# plot_telemetry(7, pls_cur_params)
