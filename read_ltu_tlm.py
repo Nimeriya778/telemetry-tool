@@ -7,6 +7,7 @@ Read telemetry and write it to database
 from dataclasses import astuple
 import sys
 import sqlite3
+from typing import Dict, List, Tuple
 from ip import get_ltu_channel
 from cu import get_cutime
 from brd import BrdTelemetry
@@ -18,7 +19,7 @@ from pls import PlsTelemetry
 # The first item of this list contains the name of the script itself.
 filename = sys.argv[1]
 
-tlm = {"LTU1.1": [], "LTU2.1": [], "LTU3.1": []}
+tlm: Dict[str, List[Tuple]] = {"LTU1.1": [], "LTU2.1": [], "LTU3.1": []}
 
 PACKET_COUNT = 0
 with open(filename, "rb") as binary_file:
