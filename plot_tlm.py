@@ -6,8 +6,8 @@ from typing import List
 import sqlite3
 from sqlite3 import Connection, Cursor
 from datetime import datetime
-import matplotlib.dates as md # type: ignore
-import matplotlib.pyplot as plt # type: ignore
+import matplotlib.dates as md  # type: ignore
+import matplotlib.pyplot as plt  # type: ignore
 
 brd_plot_list = ["cutime", "brd_lt1", "brd_lt2", "brd_lt3", "brd_lt4"]
 ldd_lt_plot_list = ["cutime", "ldd_lt1", "ldd_lt2", "ldd_lt3"]
@@ -53,7 +53,6 @@ def collect_for_plot(cursor_obj: Cursor) -> List[List]:
     for row in cursor_obj:
         for index, elem in enumerate(row):
             params_list[index].append(elem)
-    # params_list[0] = [md.date2num(datetime.fromtimestamp(i)) for i in params_list[0]]
     return params_list
 
 
@@ -68,7 +67,9 @@ chg_cur_params = collect_for_plot(chg_cur_cursor)
 chg_volt_params = collect_for_plot(chg_volt_cursor)
 
 
-def plot_telemetry(fig_number: int, params_list: List[List]) -> None:
+def plot_telemetry(
+    fig_number: int, params_list: List[List], plot_list: List[str]
+) -> None:
     """
     Create a plot
     """
@@ -85,10 +86,11 @@ def plot_telemetry(fig_number: int, params_list: List[List]) -> None:
     fig.autofmt_xdate()
     xfmt = md.DateFormatter("%Y-%m-%d")
     axes.xaxis.set_major_formatter(xfmt)
-    # plt.legend(loc="best", prop={"size": 10})
     for param in params_list[1:]:
         plt.scatter(params_list[0], param)
 
+    # Shows colored parameter names labels on a plot
+    plt.legend(plot_list[1:], loc="best", prop={"size": 10})
     ylabels = {
         1: "BRD Temperature",
         2: "LDD LT Temperature",
@@ -105,12 +107,12 @@ def plot_telemetry(fig_number: int, params_list: List[List]) -> None:
     plt.show()
 
 
-plot_telemetry(1, brd_lt_params)
-plot_telemetry(2, ldd_lt_params)
-plot_telemetry(3, ldd_rt_params)
-plot_telemetry(4, ldd_volt_params)
-plot_telemetry(5, pls_hv_params)
-plot_telemetry(6, pls_ld_params)
-plot_telemetry(7, pls_cur_params)
-plot_telemetry(8, chg_cur_params)
-plot_telemetry(9, chg_volt_params)
+plot_telemetry(1, brd_lt_params, brd_plot_list)
+plot_telemetry(2, ldd_lt_params, ldd_lt_plot_list)
+plot_telemetry(3, ldd_rt_params, ldd_rt_plot_list)
+plot_telemetry(4, ldd_volt_params, ldd_volt_plot_list)
+plot_telemetry(5, pls_hv_params, pls_hv_plot_list)
+plot_telemetry(6, pls_ld_params, pls_ld_plot_list)
+plot_telemetry(7, pls_cur_params, pls_cur_plot_list)
+plot_telemetry(8, chg_cur_params, chg_cur_plot_list)
+plot_telemetry(9, chg_volt_params, chg_volt_plot_list)
