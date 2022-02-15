@@ -6,8 +6,8 @@ from typing import List
 import sqlite3
 from sqlite3 import Connection, Cursor
 from datetime import datetime
-import matplotlib.dates as md
-import matplotlib.pyplot as plt
+import matplotlib.dates as md # type: ignore
+import matplotlib.pyplot as plt # type: ignore
 
 brd_plot_list = ["cutime", "brd_lt1", "brd_lt2", "brd_lt3", "brd_lt4"]
 ldd_lt_plot_list = ["cutime", "ldd_lt1", "ldd_lt2", "ldd_lt3"]
@@ -47,7 +47,7 @@ def collect_for_plot(cursor_obj: Cursor) -> List[List]:
     Gather data into multiple lists
     """
 
-    params_list = []
+    params_list: List[List] = []
     for _ in cursor_obj.description:
         params_list.append([])
     for row in cursor_obj:
@@ -88,25 +88,20 @@ def plot_telemetry(fig_number: int, params_list: List[List]) -> None:
     # plt.legend(loc="best", prop={"size": 10})
     for param in params_list[1:]:
         plt.scatter(params_list[0], param)
-    match fig_number:
-        case 1:
-            plt.ylabel("BRD Temperature", fontsize=16)
-        case 2:
-            plt.ylabel("LDD LT Temperature", fontsize=16)
-        case 3:
-            plt.ylabel("LDD RT Temperature", fontsize=16)
-        case 4:
-            plt.ylabel("LDD Voltage", fontsize=16)
-        case 5:
-            plt.ylabel("PLS HV Voltage", fontsize=16)
-        case 6:
-            plt.ylabel("PLS LD Voltage", fontsize=16)
-        case 7:
-            plt.ylabel("PLS Current", fontsize=16)
-        case 8:
-            plt.ylabel("CHG Current", fontsize=16)
-        case 9:
-            plt.ylabel("CHG Voltage", fontsize=16)
+
+    ylabels = {
+        1: "BRD Temperature",
+        2: "LDD LT Temperature",
+        3: "LDD RT Temperature",
+        4: "LDD Voltage",
+        5: "PLS HV Voltage",
+        6: "PLS LD Voltage",
+        7: "PLS Current",
+        8: "CHG Current",
+        9: "CHG Voltage",
+    }
+
+    plt.ylabel(ylabels[fig_number], fontsize=16)
     plt.show()
 
 
