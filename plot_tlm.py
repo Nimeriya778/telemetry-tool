@@ -16,6 +16,8 @@ ldd_volt_plot_list = ["cutime", "ldd_hv1", "ldd_ldout1"]
 pls_hv_plot_list = ["cutime", "pls_hvr1", "pls_hvr2", "pls_hvf1", "pls_hvr2"]
 pls_ld_plot_list = ["cutime", "pls_ldr1", "pls_ldr2", "pls_ldf1", "pls_ldf2"]
 pls_cur_plot_list = ["cutime", "pls_i1", "pls_i2", "pls_i2", "pls_i3"]
+chg_cur_plot_list = ["cutime", "chg_vtcur1", "chg_vscur"]
+chg_volt_plot_list = ["cutime", "chg_vsdiv", "chg_vtdiv1"]
 
 connection = sqlite3.connect("ltu-tel.sqlite")
 
@@ -36,6 +38,8 @@ ldd_volt_cursor = retrieve_from_db(connection, ldd_volt_plot_list)
 pls_hv_cursor = retrieve_from_db(connection, pls_hv_plot_list)
 pls_ld_cursor = retrieve_from_db(connection, pls_ld_plot_list)
 pls_cur_cursor = retrieve_from_db(connection, pls_cur_plot_list)
+chg_cur_cursor = retrieve_from_db(connection, chg_cur_plot_list)
+chg_volt_cursor = retrieve_from_db(connection, chg_volt_plot_list)
 
 
 def collect_for_plot(cursor_obj: Cursor) -> List[List]:
@@ -60,6 +64,8 @@ ldd_volt_params = collect_for_plot(ldd_volt_cursor)
 pls_hv_params = collect_for_plot(pls_hv_cursor)
 pls_ld_params = collect_for_plot(pls_ld_cursor)
 pls_cur_params = collect_for_plot(pls_cur_cursor)
+chg_cur_params = collect_for_plot(chg_cur_cursor)
+chg_volt_params = collect_for_plot(chg_volt_cursor)
 
 
 def plot_telemetry(fig_number: int, params_list: List[List]) -> None:
@@ -97,13 +103,19 @@ def plot_telemetry(fig_number: int, params_list: List[List]) -> None:
             plt.ylabel("PLS LD Voltage", fontsize=16)
         case 7:
             plt.ylabel("PLS Current", fontsize=16)
+        case 8:
+            plt.ylabel("CHG Current", fontsize=16)
+        case 9:
+            plt.ylabel("CHG Voltage", fontsize=16)
     plt.show()
 
 
 plot_telemetry(1, brd_lt_params)
-# plot_telemetry(2, ldd_lt_params)
-# plot_telemetry(3, ldd_rt_params)
-# plot_telemetry(4, ldd_volt_params)
-# plot_telemetry(5, pls_hv_params)
-# plot_telemetry(6, pls_ld_params)
-# plot_telemetry(7, pls_cur_params)
+plot_telemetry(2, ldd_lt_params)
+plot_telemetry(3, ldd_rt_params)
+plot_telemetry(4, ldd_volt_params)
+plot_telemetry(5, pls_hv_params)
+plot_telemetry(6, pls_ld_params)
+plot_telemetry(7, pls_cur_params)
+plot_telemetry(8, chg_cur_params)
+plot_telemetry(9, chg_volt_params)
