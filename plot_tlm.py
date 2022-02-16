@@ -15,7 +15,7 @@ ldd_rt_plot_list = ["cutime", "ldd_rt1", "ldd_rt2", "ldd_rt3"]
 ldd_volt_plot_list = ["cutime", "ldd_hv1", "ldd_ldout1"]
 pls_hv_plot_list = ["cutime", "pls_hvr1", "pls_hvr2", "pls_hvf1", "pls_hvr2"]
 pls_ld_plot_list = ["cutime", "pls_ldr1", "pls_ldr2", "pls_ldf1", "pls_ldf2"]
-pls_cur_plot_list = ["cutime", "pls_i1", "pls_i2", "pls_i2", "pls_i3"]
+pls_cur_plot_list = ["cutime", "pls_i1", "pls_i2", "pls_i3"]
 chg_cur_plot_list = ["cutime", "chg_vtcur1", "chg_vscur"]
 chg_volt_plot_list = ["cutime", "chg_vsdiv", "chg_vtdiv1"]
 
