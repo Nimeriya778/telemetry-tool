@@ -12,10 +12,9 @@ ldd_rt_plot = ["cutime", "ldd_rt1", "ldd_rt2", "ldd_rt3"]
 ldd_volt_plot = ["cutime", "ldd_hv1", "ldd_ldout1"]
 pls_hv_plot = ["cutime", "pls_hvr1", "pls_hvr2", "pls_hvf1", "pls_hvr2"]
 pls_ld_plot = ["cutime", "pls_ldr1", "pls_ldr2", "pls_ldf1", "pls_ldf2"]
-pls_cur_plot = ["cutime", "pls_i1", "pls_i2", "pls_i3"]
+pls_cur_plot = ["cutime", "pls_i1", "pls_i2", "pls_i3", "pls_i4"]
 chg_cur_plot = ["cutime", "chg_vtcur1", "chg_vscur"]
 chg_volt_plot = ["cutime", "chg_vsdiv", "chg_vtdiv1"]
-
 
 brd_cursor = retrieve_from_db(conn, brd_plot, "LTU1_1")
 ldd_lt_cursor = retrieve_from_db(conn, ldd_lt_plot, "LTU1_1")
@@ -37,12 +36,12 @@ pls_cur_params = collect_for_plot(pls_cur_cursor)
 chg_cur_params = collect_for_plot(chg_cur_cursor)
 chg_volt_params = collect_for_plot(chg_volt_cursor)
 
-plot_telemetry(1, brd_lt_params, brd_plot)
-plot_telemetry(2, ldd_lt_params, ldd_lt_plot)
-plot_telemetry(3, ldd_rt_params, ldd_rt_plot)
-plot_telemetry(4, ldd_volt_params, ldd_volt_plot)
-plot_telemetry(5, pls_hv_params, pls_hv_plot)
-plot_telemetry(6, pls_ld_params, pls_ld_plot)
-plot_telemetry(7, pls_cur_params, pls_cur_plot)
-plot_telemetry(8, chg_cur_params, chg_cur_plot)
-plot_telemetry(9, chg_volt_params, chg_volt_plot)
+plot_telemetry(brd_lt_params, brd_plot)
+plot_telemetry(ldd_lt_params, ldd_lt_plot)
+plot_telemetry(ldd_rt_params, ldd_rt_plot)
+plot_telemetry(ldd_volt_params, ldd_volt_plot)
+plot_telemetry(pls_hv_params, pls_hv_plot)
+plot_telemetry(pls_ld_params, pls_ld_plot)
+plot_telemetry(pls_cur_params, pls_cur_plot)
+plot_telemetry(chg_cur_params, chg_cur_plot)
+plot_telemetry(chg_volt_params, chg_volt_plot)

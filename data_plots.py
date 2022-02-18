@@ -8,14 +8,12 @@ import matplotlib.dates as md  # type: ignore
 import matplotlib.pyplot as plt  # type: ignore
 
 
-def plot_telemetry(
-    fig_number: int, params_list: List[List], plot_list: List[str]
-) -> None:
+def plot_telemetry(params_list: List[List], plot_list: List[str]) -> None:
     """
     Create a plot
     """
 
-    fig = plt.figure(fig_number)
+    fig = plt.figure()
     plt.tick_params(axis="both", which="major", labelsize=10)
     plt.minorticks_on()
     plt.grid(which="minor", linewidth=0.5, linestyle="--")
@@ -28,21 +26,37 @@ def plot_telemetry(
     xfmt = md.DateFormatter("%Y-%m-%d")
     axes.xaxis.set_major_formatter(xfmt)
     for param in params_list[1:]:
-        plt.scatter(params_list[0], param)
+        plt.plot(params_list[0], param)
+
+    plt.ylabel(get_labels(plot_list), fontsize=16)
 
     # Shows colored parameter names labels on a plot
     plt.legend(plot_list[1:], loc="best", prop={"size": 10})
-    ylabels = {
-        1: "BRD Temperature",
-        2: "LDD LT Temperature",
-        3: "LDD RT Temperature",
-        4: "LDD Voltage",
-        5: "PLS HV Voltage",
-        6: "PLS LD Voltage",
-        7: "PLS Current",
-        8: "CHG Current",
-        9: "CHG Voltage",
-    }
 
-    plt.ylabel(ylabels[fig_number], fontsize=16)
     plt.show()
+
+
+def get_labels(plot_list: List[str]) -> str:
+    """
+    Get plots labels depending on data
+    """
+
+    if "brd_lt1" in plot_list:
+        name = "BRD Temperature"
+    elif "ldd_lt1" in plot_list:
+        name = "LDD LT Temperature"
+    elif "ldd_rt1" in plot_list:
+        name = "LDD RT Temperature"
+    elif "ldd_hv1" in plot_list:
+        name = "LDD Voltage"
+    elif "pls_hvr1" in plot_list:
+        name = "PLS HV Voltage"
+    elif "pld_ldr1" in plot_list:
+        name = "PLS LD Voltage"
+    elif "pls_i1" in plot_list:
+        name = "PLS Current"
+    elif "chg_vscur" in plot_list:
+        name = "CHG Current"
+    else:
+        name = "CHG Voltage"
+    return name
