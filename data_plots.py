@@ -8,7 +8,9 @@ import matplotlib.dates as md  # type: ignore
 import matplotlib.pyplot as plt  # type: ignore
 
 
-def plot_telemetry(params_list: List[List], plot_list: List[str]) -> None:
+def plot_telemetry(
+    params_list: List[List], plot_list: List[str], title: str = "LTU1_1"
+) -> None:
     """
     Create a plot
     """
@@ -18,7 +20,7 @@ def plot_telemetry(params_list: List[List], plot_list: List[str]) -> None:
     plt.minorticks_on()
     plt.grid(which="minor", linewidth=0.5, linestyle="--")
     plt.grid(which="major", color="grey", linewidth=1)
-    plt.title("LTU Telemetry", fontsize=16)
+    plt.title(f"{title} telemetry", fontsize=16)
     plt.xlabel("Time", fontsize=16)
     params_list[0] = [md.date2num(datetime.fromtimestamp(i)) for i in params_list[0]]
     axes = plt.gca()
