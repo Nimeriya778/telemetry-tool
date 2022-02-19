@@ -1,7 +1,10 @@
+#!/usr/bin/env python3
+
 """
 Plot LTU telemetry from the database
 """
 
+import sys
 from queries_data import conn, retrieve_from_db, collect_for_plot
 from data_plots import plot_telemetry
 
@@ -16,15 +19,18 @@ pls_cur_plot = ["cutime", "pls_i1", "pls_i2", "pls_i3", "pls_i4"]
 chg_cur_plot = ["cutime", "chg_vtcur1", "chg_vscur"]
 chg_volt_plot = ["cutime", "chg_vsdiv", "chg_vtdiv1"]
 
-brd_cursor = retrieve_from_db(conn, brd_plot, "LTU1_1")
-ldd_lt_cursor = retrieve_from_db(conn, ldd_lt_plot, "LTU1_1")
-ldd_rt_cursor = retrieve_from_db(conn, ldd_rt_plot, "LTU1_1")
-ldd_volt_cursor = retrieve_from_db(conn, ldd_volt_plot, "LTU1_1")
-pls_hv_cursor = retrieve_from_db(conn, pls_hv_plot, "LTU1_1")
-pls_ld_cursor = retrieve_from_db(conn, pls_ld_plot, "LTU1_1")
-pls_cur_cursor = retrieve_from_db(conn, pls_cur_plot, "LTU1_1")
-chg_cur_cursor = retrieve_from_db(conn, chg_cur_plot, "LTU1_1")
-chg_volt_cursor = retrieve_from_db(conn, chg_volt_plot, "LTU1_1")
+table = sys.argv[1]
+
+# Table names can be LTU1_1, LTU2_1, LTU3_1
+brd_cursor = retrieve_from_db(conn, brd_plot, table)
+ldd_lt_cursor = retrieve_from_db(conn, ldd_lt_plot, table)
+ldd_rt_cursor = retrieve_from_db(conn, ldd_rt_plot, table)
+ldd_volt_cursor = retrieve_from_db(conn, ldd_volt_plot, table)
+pls_hv_cursor = retrieve_from_db(conn, pls_hv_plot, table)
+pls_ld_cursor = retrieve_from_db(conn, pls_ld_plot, table)
+pls_cur_cursor = retrieve_from_db(conn, pls_cur_plot, table)
+chg_cur_cursor = retrieve_from_db(conn, chg_cur_plot, table)
+chg_volt_cursor = retrieve_from_db(conn, chg_volt_plot, table)
 
 brd_lt_params = collect_for_plot(brd_cursor)
 ldd_lt_params = collect_for_plot(ldd_lt_cursor)
