@@ -2,7 +2,7 @@
 Plot settings
 """
 
-from typing import List
+from typing import List, Tuple
 from datetime import datetime
 import matplotlib.dates as md  # type: ignore
 import matplotlib.pyplot as plt  # type: ignore
@@ -20,7 +20,9 @@ def plot_telemetry(
     plt.minorticks_on()
     plt.grid(which="minor", linewidth=0.5, linestyle="--")
     plt.grid(which="major", color="grey", linewidth=1)
-    plt.title(f"{title} telemetry", fontsize=16)
+    y_name, title_name = get_labels(plot_list)
+    plt.ylabel(y_name, fontsize=16)
+    plt.title(f"{title} {title_name}", fontsize=16)
     plt.xlabel("Time", fontsize=16)
     params_list[0] = [md.date2num(datetime.fromtimestamp(i)) for i in params_list[0]]
     axes = plt.gca()
@@ -30,35 +32,33 @@ def plot_telemetry(
     for param in params_list[1:]:
         plt.plot(params_list[0], param)
 
-    plt.ylabel(get_labels(plot_list), fontsize=16)
-
     # Shows colored parameter names labels on a plot
     plt.legend(plot_list[1:], loc="best", prop={"size": 10})
 
     plt.show()
 
 
-def get_labels(plot_list: List[str]) -> str:
+def get_labels(plot_list: List[str]) -> Tuple[str, str]:
     """
     Get plots labels depending on data
     """
 
     if "brd_lt1" in plot_list:
-        name = "BRD Temperature"
+        names = ("Temperature", "BRD temperature")
     elif "ldd_lt1" in plot_list:
-        name = "LDD LT Temperature"
+        names = ("Temperature", "LDD temperature")
     elif "ldd_rt1" in plot_list:
-        name = "LDD RT Temperature"
+        names = ("Temperature", "LDD temperature")
     elif "ldd_hv1" in plot_list:
-        name = "LDD Voltage"
+        names = ("Voltage", "LDD voltage")
     elif "pls_hvr1" in plot_list:
-        name = "PLS HV Voltage"
-    elif "pld_ldr1" in plot_list:
-        name = "PLS LD Voltage"
+        names = ("Voltage", "PLS HV voltage")
+    elif "pls_ldr1" in plot_list:
+        names = ("Voltage", "PLS LD voltage")
     elif "pls_i1" in plot_list:
-        name = "PLS Current"
+        names = ("Current", "PLS current")
     elif "chg_vscur" in plot_list:
-        name = "CHG Current"
+        names = ("Current", "CHG current")
     else:
-        name = "CHG Voltage"
-    return name
+        names = ("Voltage", "CHG voltage")
+    return names
