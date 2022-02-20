@@ -1,12 +1,8 @@
 *.tld
 *.docx
-read-tld.py
-read-tld-v2.py
-read-tld-v3.py
-read-tld-v4.py
-read-tld-v5.py
-read-tld-v6.py
-read-tld-v7.py
-*.png
-photo_2021-05-18_11-47-29 (2).jpg
+*.sqlite
+.mypy_cache
+/dist
+__pycache__
+*.egg-info
 
