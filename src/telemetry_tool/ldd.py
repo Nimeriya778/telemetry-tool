@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from struct import unpack_from
-from ip import DATA_OFF, get_ltu_channel
+from .ip import DATA_OFF, get_ltu_channel
 
 LDD_PAYLOAD_FMT = "<H2xH4x4H2xH2xH"
 LDD_OFF = DATA_OFF + 116

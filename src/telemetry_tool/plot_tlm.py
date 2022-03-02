@@ -5,8 +5,8 @@ Plot LTU telemetry from the database
 """
 
 import sys
-from queries_data import conn, retrieve_from_db, collect_for_plot
-from data_plots import plot_telemetry
+from .queries_data import conn, retrieve_from_db, collect_for_plot
+from .data_plots import plot_telemetry
 
 # Group db column names to get and plot specific data
 brd_plot = ["cutime", "brd_lt1", "brd_lt2", "brd_lt3", "brd_lt4"]

@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from struct import unpack_from
-from ip import DATA_OFF
+from .ip import DATA_OFF
 
 PLS_PAYLOAD_FMT = "<16H"
 PLS_OFF = DATA_OFF + 144

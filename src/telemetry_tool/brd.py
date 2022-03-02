@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from struct import unpack_from
-from ip import DATA_OFF
+from .ip import DATA_OFF
 
 BRD_PAYLOAD_FMT = "<4H"
 BRD_OFF = DATA_OFF + 72

@@ -3,12 +3,12 @@ Packets reading
 """
 
 from typing import BinaryIO, Dict, List, Tuple
-from ip import get_ltu_channel
-from cu import get_cutime
-from brd import BrdTelemetry
-from chg import ChgTelemetry
-from ldd import LddTelemetry
-from pls import PlsTelemetry
+from .ip import get_ltu_channel
+from .cu import get_cutime
+from .brd import BrdTelemetry
+from .chg import ChgTelemetry
+from .ldd import LddTelemetry
+from .pls import PlsTelemetry
 
 PACKET_SIZE = 1092
 

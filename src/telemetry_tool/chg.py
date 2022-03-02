@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from struct import unpack_from
-from ip import DATA_OFF
+from .ip import DATA_OFF
 
 
 CHG_PAYLOAD_FMT = "<H2x3H"
