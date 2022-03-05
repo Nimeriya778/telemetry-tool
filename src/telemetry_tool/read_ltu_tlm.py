@@ -15,11 +15,6 @@ filename = sys.argv[1]
 with open(filename, "rb") as file:
     tlm = get_telemetry(file)
 
-# Convert keys, since SQL don't allow using dots in queries
-for key in tlm:
-    new_key = key.replace(".", "_")
-    tlm[new_key] = tlm.pop(key)
-
 drop_table(conn, tlm)
 
 create_table(conn, tlm)

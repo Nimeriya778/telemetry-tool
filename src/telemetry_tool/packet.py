@@ -34,5 +34,9 @@ def get_telemetry(file: BinaryIO) -> Dict[str, List[Tuple]]:
         pls = PlsTelemetry.load_from_packet(packet)
 
         tlm[channel].append((cutime, brd, chg, ldd, pls))
+        # Convert keys, since SQL don't allow using dots in queries
+        for key in tlm:
+            new_key = key.replace(".", "_")
+            tlm[new_key] = tlm.pop(key)
 
     return tlm

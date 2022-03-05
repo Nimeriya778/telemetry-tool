@@ -2,8 +2,8 @@
 CUTIME telemetry handling
 """
 
-from ip import DATA_OFF
-from timestamp import timestamp_to_unixtime
+from .ip import DATA_OFF
+from .timestamp import timestamp_to_unixtime
 
 CUTIME_OFF = DATA_OFF + 44
 CUTIME_W = 8
